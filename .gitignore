@@ -1,0 +1,6 @@
+# append to .gitignore
+.idea/
+*.iml
+out/
+.vscode/
+.DS_Store

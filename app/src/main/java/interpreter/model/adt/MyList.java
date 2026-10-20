@@ -1,9 +1,10 @@
 package interpreter.model.adt;
 import interpreter.exceptions.ADTException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyList<T> implements IList<T>{
+public class MyList<T> implements IList<T> {
     private List<T> list = new ArrayList<>();
 
     @Override

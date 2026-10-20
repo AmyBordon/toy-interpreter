@@ -1,6 +1,6 @@
 package interpreter.model.adt;
 import interpreter.exceptions.ADTException;
-import interpreter.model.adt.IDictionary;
+
 import java.util.HashMap;
 import java.util.Map;
 

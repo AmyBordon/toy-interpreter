@@ -1,6 +1,6 @@
-# append to .gitignore
+.gradle/
+build/
 .idea/
 *.iml
 out/
 .vscode/
-.DS_Store

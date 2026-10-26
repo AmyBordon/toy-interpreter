@@ -18,11 +18,11 @@ public class MyDictionary<K,V> implements IDictionary<K,V> {
     }
     @Override public void put(K key, V value){
         map.put(key, value);
-    }
-    @Override public void update(K key, V value) throws ADTException{
-        if(isDefined(key))
-            map.put(key, value);
-        throw new ADTException("key " + key + " is not defined, cannot update");
+    }@Override
+    public void update(K key, V value) throws ADTException {
+        if (!isDefined(key))
+            throw new ADTException("key " + key + " is not defined, cannot update");
+        map.put(key, value);
     }
     @Override
     public String toString() {

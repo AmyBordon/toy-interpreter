@@ -29,4 +29,15 @@ public class MyDictionary<K,V> implements IDictionary<K,V> {
         return map.toString();
     }
 
+    @Override
+    public void remove(K key) throws ADTException {
+        if (!isDefined(key))
+            throw new ADTException("key " + key + " is not defined, cannot delete");
+        map.remove(key);
+    }
+
+    @Override
+    public Map<K, V> toMap() {
+        return Map.copyOf(map);
+    }
 }

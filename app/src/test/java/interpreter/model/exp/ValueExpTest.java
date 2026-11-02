@@ -19,10 +19,9 @@ class ValueExpTest {
     }
 
     @Test
-    void doesNotDependOnTheSymbolTable() throws MyException {
-        symTable.put("x", new IntValue(99));
-        IExp e = new ValueExp(new IntValue(7));
-        assertEquals(new IntValue(7), e.eval(symTable));
+    void returnsItsBoolValue() throws MyException {
+        IExp e = new ValueExp(new BoolValue(true));
+        assertEquals(new BoolValue(true), e.eval(symTable));
     }
 
     @Test

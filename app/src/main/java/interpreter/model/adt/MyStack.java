@@ -2,7 +2,9 @@ package interpreter.model.adt;
 import interpreter.exceptions.ADTException;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 
 public class MyStack<T> implements IStack<T> {
@@ -14,4 +16,9 @@ public class MyStack<T> implements IStack<T> {
     }
     @Override public boolean isEmpty() { return stack.isEmpty(); }
     @Override public String toString() { return stack.toString(); }
+
+    @Override
+    public List<T> toList() {
+        return new ArrayList<>(stack);
+    }
 }

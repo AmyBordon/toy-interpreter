@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import interpreter.exceptions.ADTException;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 class MyDictionaryTest {
     private final IDictionary<String, Integer> dict = new MyDictionary<>();
 
@@ -28,4 +30,32 @@ class MyDictionaryTest {
     void updateOfUndefinedKeyThrows() {
         assertThrows(ADTException.class, () -> dict.update("z", 1));
     }
+
+    @Test
+    void toMapIsNotAffectedByLaterChanges() {
+        dict.put("x", 1);
+        Map<String, Integer> copy = dict.toMap();
+        dict.put("y", 2);
+        assertEquals(1, copy.size());
+    }
+
+    @Test
+    void toMapCannotBeModified() {
+        dict.put("x", 1);
+        Map<String, Integer> copy = dict.toMap();
+        assertThrows(UnsupportedOperationException.class, () -> copy.put("z", 3));
+    }
+
+    @Test
+    void removeDeletesExistingValue() throws ADTException {
+        dict.put("x", 5);
+        dict.remove("x");
+        assertFalse(dict.isDefined("x"));
+    }
+
+    @Test
+    void removeOfUndefinedKeyThrows() {
+        assertThrows(ADTException.class, () -> dict.remove("z"));
+    }
+
 }

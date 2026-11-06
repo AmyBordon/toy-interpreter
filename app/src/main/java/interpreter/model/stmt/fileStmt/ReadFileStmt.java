@@ -42,6 +42,6 @@ public record ReadFileStmt(IExp exp, String varName) implements IStmt {
 
     @Override
     public String toString() {
-        return "ReadFile(" + exp + ")";
+        return "readFile(" + exp + ", " + varName + ")";
     }
 }

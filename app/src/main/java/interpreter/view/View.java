@@ -8,10 +8,15 @@ import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
 import interpreter.model.stmt.IStmt;
 import interpreter.repository.Repository;
-
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class View {
+    private final Path dir = Path.of(
+            System.getProperty("java.io.tmpdir"),
+            "toy-interpreter"
+    );
+
     private final Scanner in = new Scanner(System.in);
     private IStmt selected = null;   // nothing selected at the start
 
@@ -43,6 +48,7 @@ public class View {
         System.out.println("1. Example 1");
         System.out.println("2. Example 2");
         System.out.println("3. Example 3");
+        System.out.println("4. Example 4");
         System.out.println("------------");
         System.out.print("> ");
     }
@@ -57,6 +63,8 @@ public class View {
             selected = Examples.EX2;
         else if (input.equals("3"))
             selected = Examples.EX3;
+        else if (input.equals("4"))
+            selected = Examples.EX4;
         else {
             System.out.println("The input is not valid!");
             return;
@@ -69,10 +77,9 @@ public class View {
             System.out.println("Select a program first.");
             return;
         }
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(),
-                new MyList<>(), selected);
+        PrgState state = PrgState.of(selected);
         try {
-            new Controller(new Repository(state), true).allStep();
+            new Controller(new Repository(state, dir.resolve("log.txt").toString()), true).allStep();
         } catch (MyException e) {
             System.out.println("Error: " + e.getMessage());   // menu must not crash
         }

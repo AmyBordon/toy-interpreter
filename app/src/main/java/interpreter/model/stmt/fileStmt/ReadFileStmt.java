@@ -16,7 +16,7 @@ import java.io.IOException;
 public record ReadFileStmt(IExp exp, String varName) implements IStmt {
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        if (!(exp.eval(state.getSymTable()) instanceof StringValue fileName))
+        if (!(exp.eval(state.getSymTable(), state.getHeap()) instanceof StringValue fileName))
             throw new StatementException("ReadFile: " + exp + " is not a string");
         var fileTable = state.getFileTable();
         if (!fileTable.isDefined(fileName))

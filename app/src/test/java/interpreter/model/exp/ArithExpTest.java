@@ -3,7 +3,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
@@ -11,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 class ArithExpTest {
     private final IDictionary<String, IValue> symTable = new MyDictionary<>();
-
+    private final IHeap heap = new MyHeap();
     private static IExp num(int n) {
         return new ValueExp(new IntValue(n));
     }
@@ -23,66 +25,66 @@ class ArithExpTest {
     @Test
     void addsTwoNumbers() throws MyException {
         IExp e = new ArithExp(ArithOp.ADD, num(2), num(3));
-        assertEquals(new IntValue(5), e.eval(symTable));
+        assertEquals(new IntValue(5), e.eval(symTable, heap));
     }
 
     @Test
     void subtractsTwoNumbers() throws MyException {
         IExp e = new ArithExp(ArithOp.SUB, num(2), num(5));
-        assertEquals(new IntValue(-3), e.eval(symTable));
+        assertEquals(new IntValue(-3), e.eval(symTable, heap));
     }
 
     @Test
     void multipliesTwoNumbers() throws MyException {
         IExp e = new ArithExp(ArithOp.MUL, num(4), num(5));
-        assertEquals(new IntValue(20), e.eval(symTable));
+        assertEquals(new IntValue(20), e.eval(symTable, heap));
     }
 
     @Test
     void dividesTwoNumbers() throws MyException {
         IExp e = new ArithExp(ArithOp.DIV, num(7), num(2));
-        assertEquals(new IntValue(3), e.eval(symTable));   // integer division
+        assertEquals(new IntValue(3), e.eval(symTable, heap));   // integer division
     }
 
     @Test
     void respectsOperatorPrecedenceEncodedInTheTree() throws MyException {
         IExp e = new ArithExp(ArithOp.ADD, num(2),
                 new ArithExp(ArithOp.MUL, num(3), num(5)));
-        assertEquals(new IntValue(17), e.eval(symTable));
+        assertEquals(new IntValue(17), e.eval(symTable, heap));
     }
 
     @Test
     void usesVariablesFromTheSymbolTable() throws MyException {
         symTable.put("x", new IntValue(5));
         IExp e = new ArithExp(ArithOp.ADD, new VarExp("x"), num(1));
-        assertEquals(new IntValue(6), e.eval(symTable));
+        assertEquals(new IntValue(6), e.eval(symTable, heap));
     }
 
     @Test
     void divisionByZeroThrows() {
         IExp e = new ArithExp(ArithOp.DIV, num(1), num(0));
-        var ex = assertThrows(ExpressionException.class, () -> e.eval(symTable));
+        var ex = assertThrows(ExpressionException.class, () -> e.eval(symTable, heap));
         assertEquals("division by zero", ex.getMessage());
     }
 
     @Test
     void nonIntegerFirstOperandThrows() {
         IExp e = new ArithExp(ArithOp.ADD, bool(true), num(1));
-        var ex = assertThrows(ExpressionException.class, () -> e.eval(symTable));
+        var ex = assertThrows(ExpressionException.class, () -> e.eval(symTable, heap));
         assertEquals("first operand is not an integer", ex.getMessage());
     }
 
     @Test
     void nonIntegerSecondOperandThrows() {
         IExp e = new ArithExp(ArithOp.ADD, num(1), bool(true));
-        var ex = assertThrows(ExpressionException.class, () -> e.eval(symTable));
+        var ex = assertThrows(ExpressionException.class, () -> e.eval(symTable, heap));
         assertEquals("second operand is not an integer", ex.getMessage());
     }
 
     @Test
     void undefinedVariableThrows() {
         IExp e = new ArithExp(ArithOp.ADD, new VarExp("y"), num(1));
-        assertThrows(MyException.class, () -> e.eval(symTable));
+        assertThrows(MyException.class, () -> e.eval(symTable, heap));
     }
 
     @Test

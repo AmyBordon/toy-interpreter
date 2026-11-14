@@ -1,5 +1,4 @@
 package interpreter.controller;
-
 import interpreter.exceptions.ADTException;
 import interpreter.exceptions.MyException;
 import interpreter.exceptions.StatementException;
@@ -85,7 +84,7 @@ public class ControllerTest {
         assertEquals(new IntValue(2), state.getOut().get(0));
     }
 
-    // ---------- example 4 (files): input files live in the temp folder ----------
+    // example 4 (files): input files live in the temp folder
 
     @Test
     void example4PrintsFifteenAndFifty() throws Exception {
@@ -122,7 +121,7 @@ public class ControllerTest {
         assertEquals(new IntValue(0), state.getOut().get(1));
     }
 
-    // ---------- example 5 (relational) ----------
+    // example 5 (relational)
 
     @Test
     void example5Prints5() throws MyException {
@@ -134,7 +133,7 @@ public class ControllerTest {
 
     @Test
     void relationalIfTakesTheElseBranchWhenTheConditionIsFalse() throws MyException {
-        // same program as Ex5 but with a = 9, so (a < b) is false and print(b) runs
+
         IStmt program = new CompStmt(new VarDeclStmt("a", new IntType()),
                 new CompStmt(new VarDeclStmt("b", new IntType()),
                         new CompStmt(new AssignStmt("a", new ValueExp(new IntValue(9))),
@@ -158,6 +157,7 @@ public class ControllerTest {
         String log = Files.readString(dir.resolve("log.txt"));
         int a = log.indexOf("ExeStack:"), b = log.indexOf("SymTable:"),
                 c = log.indexOf("Out:"), d = log.indexOf("FileTable:");
-        assertTrue(0 <= a && a < b && b < c && c < d);
+        int e = log.indexOf("Heap:");
+        assertTrue(0 <= a && a < b && b < c && c < d && d < e);
     }
 }
